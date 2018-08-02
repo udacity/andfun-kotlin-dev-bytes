@@ -18,10 +18,7 @@
 package com.example.android.devbyteviewer.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 /**
  * Stores a collection of Database videos in a room database.
@@ -36,5 +33,9 @@ interface VideoDao {
 }
 
 //// TODO (04): Add VideoDatabase here
+@Database(entities = [DatabaseVideo::class], version = 1)
+abstract class VideosDatabase : RoomDatabase() {
+    abstract val videoDao: VideoDao
+}
 
 //// TODO (05): Add getDatabase here
