@@ -32,7 +32,6 @@ import com.example.android.devbyteviewer.util.launchBackground
 
 class DevByteViewModel(application: Application) : AndroidViewModel(application) {
 
-    // TODO (07): Remove _playlist, playlist, and refreshDataFromNetwork. Add VideosRepository and make a new playlist using loadVideos().
     private val database = getDatabase(application)
     private val videosRepository = VideosRepository(database)
 
