@@ -17,7 +17,23 @@
 
 package com.example.android.devbyteviewer.database
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+
 //// TODO (03): Add VideoDao here
+/**
+ * Stores a collection of Database videos in a room database.
+ */
+@Dao
+interface VideoDao {
+    @Query("select * from databasevideo")
+    fun getVideos(): List<DatabaseVideo>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(vararg videos: DatabaseVideo)
+}
 
 //// TODO (04): Add VideoDatabase here
 
