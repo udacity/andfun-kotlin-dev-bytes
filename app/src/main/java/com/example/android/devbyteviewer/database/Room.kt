@@ -38,7 +38,6 @@ abstract class VideosDatabase : RoomDatabase() {
     abstract val videoDao: VideoDao
 }
 
-//// TODO (05): Add getDatabase here
 /**
  * Get access to the database singleton
  *
