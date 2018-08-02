@@ -23,7 +23,6 @@ import com.example.android.devbyteviewer.repository.VideosRepository
 import kotlinx.coroutines.experimental.runBlocking
 import retrofit2.HttpException
 
-// TODO (09): Add RefreshDataWorker class here
 /**
  * RefreshDataWorker will fetch new results from the network and store them in the database
  */
