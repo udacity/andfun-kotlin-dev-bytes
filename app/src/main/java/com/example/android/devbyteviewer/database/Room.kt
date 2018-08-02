@@ -23,7 +23,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
-//// TODO (03): Add VideoDao here
 /**
  * Stores a collection of Database videos in a room database.
  */
