@@ -23,4 +23,4 @@ package com.example.android.devbyteviewer.database
  * database.
  */
 
-// TODO (02): Add DatabaseVideo class here and asDomainModel() extension function
+// TODO (02): Add DatabaseVideo class, asDomainModel(), and asDatabaseModel() extension functions here
