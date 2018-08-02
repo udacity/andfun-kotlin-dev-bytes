@@ -22,30 +22,21 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.android.devbyteviewer.database.getDatabase
 import com.example.android.devbyteviewer.domain.Video
 import com.example.android.devbyteviewer.network.Network
 import com.example.android.devbyteviewer.network.asDomainModel
+import com.example.android.devbyteviewer.repository.VideosRepository
 import com.example.android.devbyteviewer.util.asReadOnly
 import com.example.android.devbyteviewer.util.launchBackground
 
 class DevByteViewModel(application: Application) : AndroidViewModel(application) {
 
     // TODO (07): Remove _playlist, playlist, and refreshDataFromNetwork. Add VideosRepository and make a new playlist using loadVideos().
-    private val _playlist = MutableLiveData<List<Video>>()
-    val playlist = _playlist.asReadOnly()
+    private val database = getDatabase(application)
+    private val videosRepository = VideosRepository(database)
 
-    init {
-        refreshDataFromNetwork()
-    }
-
-    /**
-     * Refresh data from network and pass it via LiveData. Use a coroutine launch to get to
-     * background thread.
-     */
-    private fun refreshDataFromNetwork() = launchBackground {
-        val playlist = Network.devbytes.getPlaylist().await()
-        _playlist.postValue(playlist.asDomainModel())
-    }
+    val playlist = videosRepository.loadVideos()
 
     /**
      * Factory for constructing DevByteViewModel with parameter
