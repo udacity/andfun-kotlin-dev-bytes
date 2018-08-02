@@ -32,7 +32,6 @@ interface VideoDao {
     fun insertAll(vararg videos: DatabaseVideo)
 }
 
-//// TODO (04): Add VideoDatabase here
 @Database(entities = [DatabaseVideo::class], version = 1)
 abstract class VideosDatabase : RoomDatabase() {
     abstract val videoDao: VideoDao
