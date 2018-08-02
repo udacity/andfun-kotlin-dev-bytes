@@ -104,7 +104,8 @@ dependencies {
 
     // TODO (08) add WorkManager dependency
     // Add WorkManager dependencies below this line
-    
+    def work_version = "1.0.0-alpha05"
+    implementation "android.arch.work:work-runtime-ktx:$work_version"
     // Add WorkManager dependencies above this line
 }
 
