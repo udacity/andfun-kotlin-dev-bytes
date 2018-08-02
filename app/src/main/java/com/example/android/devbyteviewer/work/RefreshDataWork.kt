@@ -17,4 +17,27 @@
 
 package com.example.android.devbyteviewer.work
 
+import androidx.work.Worker
+import com.example.android.devbyteviewer.database.getDatabase
+import com.example.android.devbyteviewer.repository.VideosRepository
+import kotlinx.coroutines.experimental.runBlocking
+import retrofit2.HttpException
+
 // TODO (09): Add RefreshDataWorker class here
+/**
+ * RefreshDataWorker will fetch new results from the network and store them in the database
+ */
+class RefreshDataWorker : Worker() {
+
+    override fun doWork() = runBlocking {
+        val database = getDatabase(applicationContext)
+        val repository = VideosRepository(database)
+        val result = try {
+            repository.refreshFromNetwork().join()
+            Result.SUCCESS
+        } catch (e: HttpException) {
+            Result.RETRY
+        }
+        result
+    }
+}
