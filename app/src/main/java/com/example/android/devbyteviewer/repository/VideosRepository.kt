@@ -26,7 +26,6 @@ import com.example.android.devbyteviewer.network.Network
 import com.example.android.devbyteviewer.network.asDatabaseModel
 import com.example.android.devbyteviewer.util.launchBackground
 
-// TODO (06): Add Videos Repository Here
 /**
  * Repository for fetching devbyte videos from the network and storing them on disk
  */
