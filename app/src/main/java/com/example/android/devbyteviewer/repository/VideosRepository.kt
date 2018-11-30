@@ -26,7 +26,6 @@ import com.example.android.devbyteviewer.network.Network
 import com.example.android.devbyteviewer.network.asDatabaseModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
-import kotlin.LazyThreadSafetyMode.NONE
 
 /**
  * Repository for fetching devbyte videos from the network and storing them on disk.
@@ -41,9 +40,7 @@ class VideosRepository(private val database: VideosDatabase) {
     /**
      * A playlist of videos that can be shown on the screen.
      */
-    val videos: LiveData<List<Video>> by lazy(mode = NONE) {
-        map(database.videoDao.getVideos()) { it.asDomainModel() }
-    }
+    val videos: LiveData<List<Video>> = map(database.videoDao.getVideos()) { it.asDomainModel() }
 
     /**
      * Refresh the videos stored in the offline cache.
