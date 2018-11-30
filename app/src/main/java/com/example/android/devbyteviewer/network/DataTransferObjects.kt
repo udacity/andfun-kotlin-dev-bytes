@@ -52,18 +52,10 @@ data class NetworkVideo(
         val updated: String,
         val thumbnail: String)
 
-fun NetworkVideContainer.asDomainModel(): List<Video> {
-    return videos.map {
-        Video(
-                title = it.title,
-                description = it.description,
-                url = it.url,
-                updated = it.updated,
-                thumbnail = it.thumbnail)
-    }
-}
-
-fun NetworkVideContainer.asDatabaseModel(): Array<DatabaseVideo> {
+/**
+ * Convert Network results to database objects
+ */
+fun NetworkVideContainer.asDatabaseModel(): List<DatabaseVideo> {
     return videos.map {
         DatabaseVideo(
                 title = it.title,
@@ -71,5 +63,5 @@ fun NetworkVideContainer.asDatabaseModel(): Array<DatabaseVideo> {
                 url = it.url,
                 updated = it.updated,
                 thumbnail = it.thumbnail)
-    }.toTypedArray()
+    }
 }

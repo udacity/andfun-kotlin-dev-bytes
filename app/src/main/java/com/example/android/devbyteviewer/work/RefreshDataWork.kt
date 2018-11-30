@@ -17,30 +17,33 @@
 
 package com.example.android.devbyteviewer.work
 
-import androidx.work.Worker
+import android.content.Context
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
 import com.example.android.devbyteviewer.database.getDatabase
 import com.example.android.devbyteviewer.repository.VideosRepository
-import kotlinx.coroutines.experimental.runBlocking
 import retrofit2.HttpException
+
 
 /**
  * RefreshDataWorker will fetch new results from the network and store them in the database
  */
-class RefreshDataWorker : Worker() {
+class RefreshDataWorker(appContext: Context, params: WorkerParameters):
+        CoroutineWorker(appContext, params)
+{
 
     companion object {
         const val WORK_NAME = "RefreshDataWorker"
     }
 
-    override fun doWork() = runBlocking {
+    override suspend fun doWork(): Payload {
         val database = getDatabase(applicationContext)
         val repository = VideosRepository(database)
-        val result = try {
-            repository.refreshFromNetwork().join()
-            Result.SUCCESS
+        return try {
+            repository.refreshVideos()
+            Payload(Result.SUCCESS)
         } catch (e: HttpException) {
-            Result.RETRY
+            Payload(Result.RETRY)
         }
-        result
     }
 }

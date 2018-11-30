@@ -19,23 +19,49 @@ package com.example.android.devbyteviewer
 
 import android.app.Application
 import android.os.Build
-import androidx.work.*
-import com.example.android.devbyteviewer.util.launchBackground
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.android.devbyteviewer.work.RefreshDataWorker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+/**
+ * Override application to setup background work via [WorkManager]
+ */
 class DevByteApplication : Application() {
+
+    val applicationScope = CoroutineScope(Dispatchers.Default)
+
+    /**
+     * onCreate is called before the first screen is shown to the user.
+     *
+     * Use it to setup any background tasks, running expensive setup operations in a background
+     * thread to avoid delaying app start.
+     */
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
+        delayedInit()
     }
 
-    // TODO (10): Create delayedInit that calls setupRecurringWork in a background coroutine
-    private fun delayedInit() = launchBackground {
-        setupRecurringWork()
+    /**
+     * Put non-essential setup code in this function to avoid blocking the first screen
+     */
+    private fun delayedInit() {
+        applicationScope.launch {
+            setupRecurringWork()
+        }
     }
 
+    /**
+     * Setup WorkManager background job to 'fetch' new network data daily.
+     */
     private fun setupRecurringWork() {
         val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.UNMETERED)
@@ -58,5 +84,4 @@ class DevByteApplication : Application() {
 
 
     }
-}
 }

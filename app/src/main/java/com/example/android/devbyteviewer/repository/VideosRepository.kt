@@ -24,32 +24,39 @@ import com.example.android.devbyteviewer.database.asDomainModel
 import com.example.android.devbyteviewer.domain.Video
 import com.example.android.devbyteviewer.network.Network
 import com.example.android.devbyteviewer.network.asDatabaseModel
-import com.example.android.devbyteviewer.util.launchBackground
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.withContext
+import kotlin.LazyThreadSafetyMode.NONE
 
 /**
- * Repository for fetching devbyte videos from the network and storing them on disk
+ * Repository for fetching devbyte videos from the network and storing them on disk.
+ *
+ * Repository modules handle data operations. They provide a clean API so that the rest of the app
+ * can retrieve this data easily. They know where to get the data from and what API calls to make
+ * when data is updated. You can consider repositories to be mediators between different data
+ * sources, in our case it mediates between a network API and an offline database cache.
  */
 class VideosRepository(private val database: VideosDatabase) {
 
     /**
-     * Force a refresh of data from the network.
-     *
-     * Does not return the data fetched. Prefer to use [loadVideos] in application code. This method
-     * is available for background sync tasks.
+     * A playlist of videos that can be shown on the screen.
      */
-    fun refreshFromNetwork() = launchBackground {
-        val playlist = Network.devbytes.getPlaylist().await()
-        database.videoDao.insertAll(*playlist.asDatabaseModel())
+    val videos: LiveData<List<Video>> by lazy(mode = NONE) {
+        map(database.videoDao.getVideos()) { it.asDomainModel() }
     }
 
     /**
-     * Load videos from the repository.
+     * Refresh the videos stored in the offline cache.
      *
-     * @return LiveData providing a list of videos
+     * This function uses the IO dispatcher to ensure the database insert database operation
+     * happens on the IO dispatcher.
+     *
+     * To actually load the videos for use, observe [videos]
      */
-    fun loadVideos(): LiveData<List<Video>> {
-        refreshFromNetwork() // do not wait for async call
-
-        return map(database.videoDao.getVideos()) { it.asDomainModel() }
+    suspend fun refreshVideos() {
+        withContext(IO) {
+            val playlist = Network.devbytes.getPlaylist().await()
+            database.videoDao.insertAll(playlist.asDatabaseModel())
+        }
     }
 }

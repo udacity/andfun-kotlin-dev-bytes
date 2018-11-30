@@ -17,11 +17,6 @@
 
 package com.example.android.devbyteviewer.util
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-
-fun <T> MutableLiveData<T>.asReadOnly(): LiveData<T> = this
-
 private val PUNCTUATION = listOf(", ", "; ", ": ", " ")
 
 /**
