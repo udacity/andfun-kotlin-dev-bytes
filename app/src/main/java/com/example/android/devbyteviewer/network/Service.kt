@@ -32,7 +32,7 @@ import retrofit2.http.GET
  */
 interface DevbyteService {
     @GET("objcode/a32298e2f6cd040aac5cdaa79f72f292/raw/5429ef2a97caea867a38e7389466325a31448068/testing_json")
-    fun getPlaylist(): Deferred<NetworkVideContainer>
+    fun getPlaylist(): Deferred<NetworkWideContainer>
 }
 
 /**

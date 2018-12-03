@@ -17,8 +17,7 @@
 
 package com.example.android.devbyteviewer.network
 
-import com.example.android.devbyteviewer.database.DatabaseVideo
-import com.example.android.devbyteviewer.domain.Video
+import com.example.android.devbyteviewer.database.VideoEntity
 import com.squareup.moshi.JsonClass
 
 /**
@@ -39,29 +38,30 @@ import com.squareup.moshi.JsonClass
  * }
  */
 @JsonClass(generateAdapter = true)
-data class NetworkVideContainer(val videos: List<NetworkVideo>)
+data class NetworkWideContainer(val videos: List<VideoDTO>)
 
 /**
  * Videos represent a devbyte that can be played.
  */
 @JsonClass(generateAdapter = true)
-data class NetworkVideo(
+data class VideoDTO(
         val title: String,
         val description: String,
         val url: String,
-        val updated: String,
-        val thumbnail: String)
+        //val updated: String,
+        val thumbnail: String, val closedCaptions: String?)//TODO service
 
 /**
  * Convert Network results to database objects
  */
-fun NetworkVideContainer.asDatabaseModel(): List<DatabaseVideo> {
+fun NetworkWideContainer.asDatabaseModel(): List<VideoEntity> {
     return videos.map {
-        DatabaseVideo(
+        VideoEntity(
                 title = it.title,
                 description = it.description,
                 url = it.url,
-                updated = it.updated,
+                //updated = it.updated,
                 thumbnail = it.thumbnail)
+        //closedCaptions filed dismissed
     }
 }

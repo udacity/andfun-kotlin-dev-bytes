@@ -28,24 +28,24 @@ import com.example.android.devbyteviewer.domain.Video
  */
 
 /**
- * DatabaseVideo represents a video in the database.
+ * VideoEntity represents a video in the database.
  */
 @Entity
-data class DatabaseVideo constructor(
+data class VideoEntity constructor(
         @PrimaryKey
         val url: String,
-        val updated: String,
+        // val updated: String,
         val title: String,
         val description: String,
         val thumbnail: String)
 
-fun List<DatabaseVideo>.asDomainModel(): List<Video> {
+fun List<VideoEntity>.asDomainModel(): List<Video> {
     return map {
         Video(
                 url = it.url,
                 title = it.title,
                 description = it.description,
-                updated = it.updated,
+                updated = System.currentTimeMillis().toString(),
                 thumbnail = it.thumbnail)
     }
 }
