@@ -19,24 +19,31 @@ package com.example.android.devbyteviewer.database
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Database
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Room
+import androidx.room.RoomDatabase
+
 
 /**
  * Stores a collection of Database videos in a room database.
  */
 @Dao
 interface VideoDao {
-    @Query("select * from videoentity")
-    fun getVideos(): LiveData<List<VideoEntity>>
+    @Query("select * from databasevideo")
+    fun getVideos(): LiveData<List<DatabaseVideo>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(videos: List<VideoEntity>)
+    fun insertAll(videos: List<DatabaseVideo>)
 }
 
 /**
  * Stores a refrence to our DAO objects.
  */
-@Database(entities = [VideoEntity::class], version = 2)
+@Database(entities = [DatabaseVideo::class], version = 2)
 abstract class VideosDatabase : RoomDatabase() {
     abstract val videoDao: VideoDao
 }
