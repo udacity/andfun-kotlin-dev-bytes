@@ -43,7 +43,7 @@ interface VideoDao {
 /**
  * Stores a refrence to our DAO objects.
  */
-@Database(entities = [DatabaseVideo::class], version = 2)
+@Database(entities = [DatabaseVideo::class], version = 1)
 abstract class VideosDatabase : RoomDatabase() {
     abstract val videoDao: VideoDao
 }
