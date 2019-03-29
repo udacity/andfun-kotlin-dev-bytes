@@ -18,15 +18,15 @@
 package com.example.android.devbyteviewer.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.*
-import com.example.android.devbyteviewer.domain.Video
-import com.example.android.devbyteviewer.network.Network
-import com.example.android.devbyteviewer.network.asDomainModel
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.android.devbyteviewer.database.getDatabase
+import com.example.android.devbyteviewer.repository.VideosRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 /**
  * DevByteViewModel designed to store and manage UI-related data in a lifecycle conscious way. This
@@ -55,49 +55,19 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
      */
     private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    // TODO (01) Remove _playlist, playlist variables, the init block,  and refreshDataFromNetwork() function.
-
-    // TODO (02) Create a database variable and assign it to  getDatabase(), passing the application.
-
-    // TODO (03) Define a videosRepository by calling the constructor and passing in the database.
-
-    // TODO (04) Create an init block and launch a coroutine to call videosRepository.refreshVideos().
-
-    // TODO (05) Get videos from the repository and assign it to a playlist variable.
-
-    /**
-     * A playlist of videos that can be shown on the screen. This is private to avoid exposing a
-     * way to set this value to observers.
-     */
-    private val _playlist = MutableLiveData<List<Video>>()
-
-    /**
-     * A playlist of videos that can be shown on the screen. Views should use this to get access
-     * to the data.
-     */
-    val playlist: LiveData<List<Video>>
-        get() = _playlist
+    private val database = getDatabase(application)
+    private val videosRepository = VideosRepository(database)
 
     /**
      * init{} is called immediately when this ViewModel is created.
      */
     init {
-        refreshDataFromNetwork()
-    }
-
-    /**
-     * Refresh data from network and pass it via LiveData. Use a coroutine launch to get to
-     * background thread.
-     */
-    private fun refreshDataFromNetwork() = viewModelScope.launch {
-        try {
-            val playlist = Network.devbytes.getPlaylist().await()
-            _playlist.postValue(playlist.asDomainModel())
-        } catch (networkError: IOException) {
-            // Show an infinite loading spinner if the request fails
-            // challenge exercise: show an error to the user if the network request fails
+        viewModelScope.launch {
+            videosRepository.refreshVideos()
         }
     }
+
+    val playlist = videosRepository.videos
 
     /**
      * Cancel all coroutines when the ViewModel is cleared
