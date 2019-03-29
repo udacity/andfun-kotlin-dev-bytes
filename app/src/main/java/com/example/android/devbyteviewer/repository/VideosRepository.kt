@@ -16,3 +16,10 @@
  */
 
 package com.example.android.devbyteviewer.repository
+
+// TODO (01) Create a VideosRepository class that takes a VideosDatabase argument.
+
+// TODO (02) Define a suspend refreshVideos() function that gets data from the network and
+// inserts it into the database.
+
+// TODO (03) Define a Transformations.map  to convert the DatabaseVideo list to a list of Video.
