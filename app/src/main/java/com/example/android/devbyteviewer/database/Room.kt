@@ -16,3 +16,9 @@
  */
 
 package com.example.android.devbyteviewer.database
+
+// TODO (01) Create a @Dao interface called VideoDao.
+
+// TODO (02) Add SQL @Query getVideos() function that returns a List of DatabaseVideo.
+
+// TODO (03) Add SQL @Insert insertAll() that replaces on conflict (or upsert).
