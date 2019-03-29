@@ -24,6 +24,9 @@ import androidx.room.Query
 
 @Dao
 interface VideoDao {
+
+    // TODO (01) Update getVideos() to return the List as a LiveData.
+
     @Query("select * from databasevideo")
     fun getVideos(): List<DatabaseVideo>
 
