@@ -16,3 +16,12 @@
  */
 
 package com.example.android.devbyteviewer.work
+
+// TODO (01) Create the RefreshDataWorker class, extend it from CoroutineWorker, and
+// pass in a Context and WorkerParams.
+
+// TODO (02) Override the required doWork() method, and create variables for the
+// database and the repository.
+
+// TODO (03) Inside doWork(), in a try-catch block, refresh the videos, and
+// use Payload() to return SUCCESS or RETRY result.
