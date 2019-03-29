@@ -55,6 +55,16 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
      */
     private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+    // TODO (01) Remove _playlist, playlist variables, the init block,  and refreshDataFromNetwork() function.
+
+    // TODO (02) Create a database variable and assign it to  getDatabase(), passing the application.
+
+    // TODO (03) Define a videosRepository by calling the constructor and passing in the database.
+
+    // TODO (04) Create an init block and launch a coroutine to call videosRepository.refreshVideos().
+
+    // TODO (05) Get videos from the repository and assign it to a playlist variable.
+
     /**
      * A playlist of videos that can be shown on the screen. This is private to avoid exposing a
      * way to set this value to observers.
