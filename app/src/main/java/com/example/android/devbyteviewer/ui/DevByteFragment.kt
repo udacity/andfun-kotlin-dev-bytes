@@ -44,12 +44,12 @@ class DevByteFragment : Fragment() {
 
     /**
      * One way to delay creation of the viewModel until an appropriate lifecycle method is to use
-     * lazy. This requires that viewModel not be referenced before onActivityCreated, which we
+     * lazy. This requires that viewModel not be referenced before onViewCreated(), which we
      * do in this Fragment.
      */
     private val viewModel: DevByteViewModel by lazy {
         val activity = requireNotNull(this.activity) {
-            "You can only access the viewModel after onActivityCreated()"
+            "You can only access the viewModel after onViewCreated()"
         }
         //The ViewModelProviders (plural) is deprecated.  
         //ViewModelProviders.of(this, DevByteViewModel.Factory(activity.application)).get(DevByteViewModel::class.java)
