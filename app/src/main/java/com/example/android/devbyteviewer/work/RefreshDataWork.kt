@@ -33,15 +33,18 @@ class RefreshDataWorker(appContext: Context, params: WorkerParameters):
 
     /**
      * A coroutine-friendly method to do your work.
+     * Note: In recent work version upgrade, 1.0.0-alpha12 and onwards have a breaking change.
+     * The doWork() function now returns Result instead of Payload because they have combined Payload into Result.
+     * Read more here - https://developer.android.com/jetpack/androidx/releases/work#1.0.0-alpha12
      */
-    override suspend fun doWork(): Payload {
+    override suspend fun doWork(): Result {
         val database = getDatabase(applicationContext)
         val repository = VideosRepository(database)
         return try {
             repository.refreshVideos()
-            Payload(Result.SUCCESS)
+            Result.success()
         } catch (e: HttpException) {
-            Payload(Result.RETRY)
+            Result.retry()
         }
     }
 }
