@@ -36,7 +36,7 @@ buildscript {
         version_moshi = "1.8.0"
         version_glide = "4.8.0"
         version_joda = "2.10"
-        version_work = "1.0.0-alpha11"
+        version_work = "1.0.1"
         version_timber = "4.7.1"
     }
 
