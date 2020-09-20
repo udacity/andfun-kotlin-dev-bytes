@@ -92,7 +92,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$version_room"
 
     // Kotlin Extensions and Coroutines support for Room
-    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-ktx:$version_room"
 
     // WorkManager
     implementation "android.arch.work:work-runtime-ktx:$version_work"
