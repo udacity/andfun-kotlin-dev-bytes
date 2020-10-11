@@ -43,6 +43,10 @@ android {
         dataBinding true
     }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
 }
 
 dependencies {
@@ -95,5 +99,5 @@ dependencies {
     implementation "androidx.room:room-ktx:$version_room"
 
     // WorkManager
-    implementation "android.arch.work:work-runtime-ktx:$version_work"
+    implementation "androidx.work:work-runtime-ktx:$version_work"
 }
