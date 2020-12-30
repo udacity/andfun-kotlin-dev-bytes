@@ -16,3 +16,51 @@
  */
 
 package com.example.android.devbyteviewer.repository
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import com.example.android.devbyteviewer.database.VideosDatabase
+import com.example.android.devbyteviewer.database.asDomainModel
+import com.example.android.devbyteviewer.domain.Video
+import com.example.android.devbyteviewer.network.Network
+import com.example.android.devbyteviewer.network.asDatabaseModel
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.withContext
+
+
+/*Repository for fetching videos from network and writing them to disk*/
+
+//pass database directly to the constructor instead of context
+class VideosRepository(private val database: VideosDatabase) {
+
+
+    //REFRESH OFFLINE CACHE
+
+    //mark with 'suspend' to make fxn Coroutine Friendly
+    suspend fun refreshVideos() {
+
+        //switch to IO
+        withContext(IO) {
+
+            //read from network
+            val playlist = Network.devbytes.getPlaylist()
+
+            //insert video into database
+            database.videoDAO.insertAll(*playlist.asDatabaseModel())
+        }
+    }
+
+
+    //LOAD VIDEO DATA FROM OFFLINE CACHE
+
+    //this returns a LiveData Object that callers can observe
+    val videos: LiveData<List<Video>> = Transformations.
+
+            //map from database video to domain video
+    map(database.videoDAO.getVideos()) {
+
+        it.asDomainModel()
+    }
+
+
+}

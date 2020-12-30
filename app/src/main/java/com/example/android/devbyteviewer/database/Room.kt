@@ -38,7 +38,8 @@ interface VideoDAO {
     making a list*/
 
     @Insert(onConflict = REPLACE)
-    fun insertAll(vararg: DatabaseVideo)
+   fun insertAll(vararg videos: DatabaseVideo)
+    //fun insertAll(vararg: DatabaseVideo)
 }
 
 
@@ -59,7 +60,7 @@ abstract class VideosDatabase : RoomDatabase() {
 
 
         //public way to get Database method, returns INSTANCE after it has been initialized
-        fun getInstance(context: Context): VideosDatabase {
+        fun getDatabaseInstance(context: Context): VideosDatabase {
 
 
             //make initialization thread-safe by wrapping it around a Synchronized block
@@ -71,8 +72,7 @@ abstract class VideosDatabase : RoomDatabase() {
                 if (!::INSTANCE.isInitialized) {
 
                     //if not initialized, then we initialize INSTANCE  inside the if-statement
-                    INSTANCE = Room.databaseBuilder(
-                            context.applicationContext, VideosDatabase::class.java, "videos")
+                    INSTANCE = Room.databaseBuilder(context.applicationContext, VideosDatabase::class.java, "videos")
                             .fallbackToDestructiveMigration()
                             .build()
                 }
