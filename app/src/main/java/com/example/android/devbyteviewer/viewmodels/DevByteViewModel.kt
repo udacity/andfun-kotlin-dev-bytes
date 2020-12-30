@@ -18,15 +18,13 @@
 package com.example.android.devbyteviewer.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.*
-import com.example.android.devbyteviewer.domain.Video
-import com.example.android.devbyteviewer.network.Network
-import com.example.android.devbyteviewer.network.asDomainModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.example.android.devbyteviewer.database.VideosDatabase
+import com.example.android.devbyteviewer.repository.VideosRepository
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 /**
  * DevByteViewModel designed to store and manage UI-related data in a lifecycle conscious way. This
@@ -40,12 +38,29 @@ import java.io.IOException
  */
 class DevByteViewModel(application: Application) : AndroidViewModel(application) {
 
+    //database to create our repository
+    private val database = VideosDatabase.getDatabaseInstance(application)
+
+    //instantiate repository
+    val repo = VideosRepository(database)
+
+    //Refresh offline cache every time DevByteViewModel is created
+    init {
+
+        viewModelScope.launch {
+
+            //refresh offline cache
+            repo.refreshVideos()
+        }
+
+        //expose and query Video every time the LiveData changes
+        val playlist = repo.videos
+    }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(DevByteViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return DevByteViewModel(app) as T
+                @Suppress("UNCHECKED_CAST") return DevByteViewModel(app) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }
