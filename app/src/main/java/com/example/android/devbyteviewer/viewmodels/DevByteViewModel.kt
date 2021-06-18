@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
  * results after the new Fragment or Activity is available.
  *
  * @param application The application that this viewmodel is attached to, it's safe to hold a
- * reference to applications across rotation since Application is never recreated during actiivty
+ * reference to applications across rotation since Application is never recreated during activty
  * or fragment lifecycle events.
  */
 class DevByteViewModel(application: Application) : AndroidViewModel(application) {
