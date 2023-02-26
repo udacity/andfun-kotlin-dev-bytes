@@ -13,5 +13,5 @@
 
 
 # gradle
-gradle/
-gradlew*
+#gradle/
+#gradlew*
