@@ -19,14 +19,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 
 android {
-    compileSdkVersion 30
+    compileSdk 34
     defaultConfig {
         applicationId "com.example.android.devbyteviewer"
-        minSdkVersion 19
-        targetSdkVersion 30
+        minSdkVersion 21
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -43,11 +43,18 @@ android {
         dataBinding true
     }
 
+    namespace = "com.example.android.devbyteviewer"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
 
     // Support libraries
     implementation "androidx.appcompat:appcompat:$version_appcompat"
@@ -58,8 +65,8 @@ dependencies {
     implementation "androidx.core:core-ktx:$version_core"
 
     // Navigation
-    implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
-    implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
+    implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
 
     // Coroutines for getting off the UI thread
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
@@ -95,5 +102,5 @@ dependencies {
     implementation "androidx.room:room-ktx:$version_room"
 
     // WorkManager
-    implementation "android.arch.work:work-runtime-ktx:$version_work"
+    implementation "androidx.work:work-runtime-ktx:$version_work"
 }
